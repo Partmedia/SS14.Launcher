@@ -238,7 +238,12 @@ internal static class Program
         locator.RegisterConstant(launcherInfo);
 
         return AppBuilder.Configure(() => new App(overrideAssets))
-            .UsePlatformDetect()
+            .UseX11()
+            .UseSkia()
+            .With(new X11PlatformOptions
+            {
+                UseGLibMainLoop = true
+            })
             .With(new FontManagerOptions
             {
                 // Necessary workaround for #84 on Linux
