@@ -1,13 +1,44 @@
-# SS14.Launcher
+# ss14-launcher-freebsd
+FreeBSD build for the Space Station 14 Launcher
 
-<a href="https://weblate.spacestation14.com/engage/space-station-14-launcher/">
-<img src="https://weblate.spacestation14.com/widget/space-station-14-launcher/main/svg-badge.svg" alt="Translation status" />
-</a>
+## Dependencies
+1. Install `dotnet`:
 
-This is the launcher you should be using to connect to SS14 servers. Server browser, content downloads, account management. It's got it all!
+        # pkg install dotnet
 
-# Development
+    You may need to set the `DOTNET_ROOT` environment variable.
 
-Useful environment variables for development:
-* `SS14_LAUNCHER_APPDATA_NAME=launcherTest` to change the user data directories the launcher stores its data in. This can be useful to avoid breaking your "normal" SS14 launcher data while developing something.
-* `SS14_LAUNCHER_OVERRIDE_AUTH=https://.../` to change the auth API URL to test against a local dev version of the API.
+2. Install `harfbuzz`, e.g.:
+
+        # pkg install harfbuzz
+
+## Pre-Built Binaries
+1. You still need to install the above dependencies.
+
+2. Download a pre-built binary for your platform from the "Releases" tab. If a pre-built binary is not available, you will need to build this yourself.
+
+3. Extract the ZIP archive.
+
+4. Run `./SS14.Launcher`
+
+## Building
+
+1. Clone and enter this repository.
+
+2. Copy the following shared libraries into the top level directory:
+
+       - *libHarfBuzzSharp.so*. You can get this from the `harfbuzz` port, e.g.:
+       
+            $ cp /usr/local/lib/libharfbuzz.so ./libHarfBuzzSharp.so
+
+       - *libsodium.so*. This needs to be from libsodium 1.0.18. A later version from pkg won't work. So you need to do something like:
+
+            $ cd /usr/ports/security/libsodium
+            $ git checkout fb16dfecae4a6e -- . # check out the last version of libsodium 1.0.18 from ports
+            $ make
+
+         Then grab the resulting shared library.
+
+4. Run the packaging script:
+
+        $ sh publish_freebsd.sh
